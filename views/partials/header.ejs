@@ -1,0 +1,16 @@
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/"><span class="brand-mark">★</span><%= siteName %></a>
+    <nav class="nav">
+      <a href="/">Reviews</a>
+      <% if (isLoggedIn) { %>
+        <a href="/dashboard">Dashboard</a>
+        <form method="post" action="/logout" class="inline">
+          <button class="btn btn-ghost btn-small" type="submit">Sign out</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="btn btn-ghost btn-small">Staff login</a>
+      <% } %>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,83 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main class="wrap narrow">
+  <section class="panel">
+    <p class="crumb"><a class="muted" href="/dashboard">← Back to dashboard</a></p>
+    <h1><%= mode === 'edit' ? 'Edit review' : 'New review' %></h1>
+
+    <form method="post" action="<%= action %>" class="form" id="review-form" novalidate>
+      <div class="grid-2">
+        <label class="field">
+          <span>Identifier <em>(used to remove/edit it later)</em></span>
+          <input name="identifier" value="<%= review.identifier %>" placeholder="jane-doe" maxlength="40" required>
+          <% if (errors.identifier) { %><span class="field-error"><%= errors.identifier %></span><% } %>
+        </label>
+        <label class="field">
+          <span>Display name</span>
+          <input name="display_name" value="<%= review.display_name %>" placeholder="Jane Doe" maxlength="80" required>
+          <% if (errors.display_name) { %><span class="field-error"><%= errors.display_name %></span><% } %>
+        </label>
+        <label class="field">
+          <span>Username</span>
+          <input name="username" value="<%= review.username %>" placeholder="janedoe" maxlength="80" required>
+          <% if (errors.username) { %><span class="field-error"><%= errors.username %></span><% } %>
+        </label>
+        <label class="field">
+          <span>Discord user ID</span>
+          <input name="discord_id" value="<%= review.discord_id %>" placeholder="123456789012345678" inputmode="numeric" required>
+          <% if (errors.discord_id) { %><span class="field-error"><%= errors.discord_id %></span><% } %>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>User link <em>(their profile)</em></span>
+        <input type="url" name="user_link" value="<%= review.user_link %>" placeholder="https://…" required>
+        <% if (errors.user_link) { %><span class="field-error"><%= errors.user_link %></span><% } %>
+      </label>
+
+      <label class="field">
+        <span>Banner <em>(direct image link)</em></span>
+        <input type="url" name="banner_url" id="banner_url" value="<%= review.banner_url %>" placeholder="https://…/banner.png" required>
+        <% if (errors.banner_url) { %><span class="field-error"><%= errors.banner_url %></span><% } %>
+      </label>
+      <div class="banner-preview" id="banner-preview" hidden>
+        <img alt="Banner preview">
+        <span class="muted">Banner preview</span>
+      </div>
+
+      <div class="grid-2">
+        <label class="field">
+          <span>Service</span>
+          <input name="service" value="<%= review.service %>" placeholder="Logo Design" maxlength="80" required>
+          <% if (errors.service) { %><span class="field-error"><%= errors.service %></span><% } %>
+        </label>
+
+        <fieldset class="field star-field">
+          <legend>Rating</legend>
+          <div class="star-input">
+            <% [5, 4, 3, 2, 1].forEach(function(n) { %>
+              <input class="star-radio" type="radio" id="star<%= n %>" name="rating" value="<%= n %>"
+                     <%= String(review.rating) === String(n) ? 'checked' : '' %>>
+              <label for="star<%= n %>" title="<%= n %> star<%= n === 1 ? '' : 's' %>">★</label>
+            <% }) %>
+          </div>
+          <% if (errors.rating) { %><span class="field-error"><%= errors.rating %></span><% } %>
+        </fieldset>
+      </div>
+
+      <label class="field">
+        <span>Experience <em>(how it went — deadlines, communication, quality)</em></span>
+        <textarea name="experience" rows="6" placeholder="We worked together on…" required><%= review.experience %></textarea>
+        <% if (errors.experience) { %><span class="field-error"><%= errors.experience %></span><% } %>
+      </label>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit"><%= mode === 'edit' ? 'Save changes' : 'Publish review' %></button>
+        <a class="btn btn-ghost" href="/dashboard">Cancel</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

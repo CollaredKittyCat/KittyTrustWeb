@@ -1,0 +1,66 @@
+<%- include('partials/head', { title: 'Staff dashboard' }) %>
+<%- include('partials/header') %>
+
+<main class="wrap">
+  <section class="dash-head">
+    <div>
+      <p class="eyebrow">Staff area</p>
+      <h1>Dashboard</h1>
+      <p class="muted">
+        <%= stats.total %> review<%= stats.total === 1 ? '' : 's' %> ·
+        average <%= stats.avg.toFixed(1) %> ★
+      </p>
+    </div>
+    <a class="btn btn-primary" href="/dashboard/new">+ Add review</a>
+  </section>
+
+  <% if (notice) { %><p class="flash flash-ok"><%= notice %></p><% } %>
+  <% if (problem) { %><p class="flash flash-err"><%= problem %></p><% } %>
+
+  <section class="panel danger-panel">
+    <h2>Remove a review</h2>
+    <p class="muted">Enter the <strong>identifier</strong> (or row ID) of the review you want to delete.</p>
+    <form method="post" action="/dashboard/reviews/remove" class="remove-form">
+      <input name="identifier" placeholder="e.g. jane-doe" required aria-label="Identifier">
+      <button class="btn btn-danger" type="submit" data-confirm="Permanently remove this review?">Remove</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>All reviews</h2>
+    <% if (!reviews.length) { %>
+      <p class="muted">Nothing here yet — add your first review.</p>
+    <% } else { %>
+      <div class="table-scroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Identifier</th><th>Name</th><th>Service</th><th>Rating</th><th>Updated</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reviews.forEach(function(r) { %>
+              <tr>
+                <td><%= r.id %></td>
+                <td><code><%= r.identifier %></code></td>
+                <td><%= r.display_name %> <span class="handle">@<%= r.username %></span></td>
+                <td><%= r.service %></td>
+                <td><%- stars(r.rating) %></td>
+                <td><%= fmtDate(r.updated_at) %></td>
+                <td class="row-actions">
+                  <a class="btn btn-small" href="/dashboard/reviews/<%= r.id %>/edit">Edit</a>
+                  <form method="post" action="/dashboard/reviews/remove" class="inline">
+                    <input type="hidden" name="identifier" value="<%= r.identifier %>">
+                    <button class="btn btn-small btn-danger" type="submit" data-confirm="Remove <%= r.display_name %>?">Remove</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

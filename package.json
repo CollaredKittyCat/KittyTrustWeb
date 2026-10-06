@@ -1,0 +1,21 @@
+{
+  "name": "freelance-review-board",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Publish first-hand reviews of freelancers you've personally worked with. PostgreSQL-backed, ready for Railway.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:push": "node src/db.js --push"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pg": "^8.13.3"
+  }
+}

@@ -1,0 +1,23 @@
+<%- include('partials/head', { title: 'Staff login' }) %>
+<%- include('partials/header') %>
+
+<main class="wrap narrow">
+  <section class="panel">
+    <p class="eyebrow">Staff area</p>
+    <h1>Dashboard login</h1>
+    <p class="muted">Sign in to add, edit, or remove reviews.</p>
+
+    <% if (notice) { %><p class="flash flash-ok"><%= notice %></p><% } %>
+
+    <form method="post" action="/login" class="form">
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" autocomplete="current-password" required autofocus>
+      </label>
+      <% if (error) { %><p class="field-error"><%= error %></p><% } %>
+      <button class="btn btn-primary" type="submit">Sign in</button>
+    </form>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

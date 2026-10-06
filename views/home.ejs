@@ -1,0 +1,67 @@
+<%- include('partials/head', { title: 'Home' }) %>
+<%- include('partials/header') %>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">First-hand · Unpaid · Dealt with personally</p>
+    <h1>Reviews of freelancers I've <em>actually</em> hired.</h1>
+    <p class="lede">
+      Every card below is someone I worked with myself — banner, links, service, and an honest
+      write-up of how the experience went.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><strong><%= stats.total %></strong><span>review<%= stats.total === 1 ? '' : 's' %></span></div>
+      <div class="stat"><strong><%= stats.avg.toFixed(1) %></strong><span>average rating</span></div>
+      <div class="stat"><strong class="stat-stars"><%- stars(Math.round(stats.avg)) %></strong><span>overall</span></div>
+    </div>
+
+    <form class="searchbar" method="get" action="/" role="search">
+      <input type="search" name="q" value="<%= q %>" placeholder="Search by name, @username, service…" aria-label="Search reviews">
+      <button class="btn btn-primary" type="submit">Search</button>
+      <% if (q) { %><a class="btn btn-ghost" href="/">Clear</a><% } %>
+    </form>
+
+    <% if (notice) { %><p class="flash flash-ok"><%= notice %></p><% } %>
+    <% if (problem) { %><p class="flash flash-err"><%= problem %></p><% } %>
+  </section>
+
+  <% if (!reviews.length) { %>
+    <section class="panel empty">
+      <h2><%= q ? 'No matches' : 'No reviews yet' %></h2>
+      <p class="muted"><%= q ? 'Nothing found for “' + q + '”. Try another search.' : 'Published reviews will appear here.' %></p>
+      <% if (!q) { %><a class="btn btn-primary" href="/login">Open the dashboard</a><% } %>
+    </section>
+  <% } else { %>
+    <section class="grid">
+      <% reviews.forEach(function(r) { %>
+        <article class="card">
+          <div class="card-banner">
+            <img src="<%= r.banner_url %>" alt="Banner for <%= r.display_name %>" loading="lazy"
+                 onerror="this.parentElement.classList.add('no-banner'); this.remove();">
+            <span class="service-tag"><%= r.service %></span>
+          </div>
+          <div class="card-body">
+            <div class="card-head">
+              <div class="card-id">
+                <h3><%= r.display_name %></h3>
+                <p class="handle">@<%= r.username %></p>
+              </div>
+              <div class="rating" title="<%= r.rating %> out of 5">
+                <%- stars(r.rating) %><span class="rating-num"><%= r.rating %>/5</span>
+              </div>
+            </div>
+            <p class="discord">Discord ID <code><%= r.discord_id %></code></p>
+            <p class="experience"><%= r.experience %></p>
+            <div class="card-foot">
+              <a class="btn btn-primary" href="<%= r.user_link %>" target="_blank" rel="noopener noreferrer">View profile ↗</a>
+              <span class="meta">Updated <%= fmtDate(r.updated_at) %></span>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </section>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>
